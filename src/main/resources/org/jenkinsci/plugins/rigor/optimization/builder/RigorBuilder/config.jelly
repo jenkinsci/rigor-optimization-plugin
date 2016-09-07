@@ -1,0 +1,61 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core"
+         xmlns:st="jelly:stapler"
+         xmlns:d="jelly:define"
+         xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson"
+         xmlns:c="/lib/credentials"
+         xmlns:f="/lib/form">
+  <!--
+    This jelly script is used for per-project configuration.
+
+    See global.jelly for a general discussion about jelly script.
+  -->
+
+  <f:block>
+    <br/>
+    <a href="http://rigor.com" target="_blank"><img src="http://rigor.com/wp-content/uploads/2016/08/Rigor-Jenkins-Plugin.png" /></a>
+    <br/>
+  </f:block>
+
+  <f:entry title="Rigor Optimization API Key" field="credentialsId">
+    <c:select/>
+  </f:entry>
+
+  <f:entry title="Performance Test IDs" field="performanceTestIds">
+    <f:textbox />
+  </f:entry>
+
+  <f:block>
+    <f:validateButton title="Test Connection to Rigor" progress="Testing Connection..." method="verifyCredentials" with="credentialsId,performanceTestIds">
+    </f:validateButton>
+  </f:block>
+
+
+  <!-- use inline=true so all fields get passed as direct parms in the java constructor. Otherwise these
+  would serialize to a JSON string.
+   -->
+  <f:optionalBlock title="Fail build based on test results (expand)" field="failOnResults" inline="true">
+    <f:entry title="Fail if below this performance score" field="performanceScore">
+      <f:textbox />
+    </f:entry>
+
+    <f:entry title="Fail if above this # critical defects" field="criticalNumber">
+      <f:textbox />
+    </f:entry>
+
+    <f:entry title="Fail if defect IDs found" field="foundDefectIds">
+      <f:textbox />
+    </f:entry>
+
+    <f:entry title="Timeout waiting for test completion (seconds)" field="testTimeoutSeconds">
+      <f:textbox default="300" />
+    </f:entry>
+
+    <f:entry title="Fail if tests encounter errors" field="failOnSnapshotError">
+     <f:checkbox default="true" />
+    </f:entry>
+
+  </f:optionalBlock>
+
+</j:jelly>
