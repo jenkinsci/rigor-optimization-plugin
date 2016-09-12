@@ -30,7 +30,7 @@
 
   <name>Rigor Optimization Website Performance Testing</name>
   <description>Test for website performance defects as a build step.</description>
-  <url>http://rigor.com</url>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Rigor+Optimization+Plugin</url>
 
   <!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for the applicable one if needed. -->
 
@@ -42,25 +42,20 @@
     </license>
   </licenses>
 
-  <!-- Assuming you want to host on @jenkinsci:
   <scm>
-    <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
-    <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <connection>scm:git:ssh://github.com/jenkinsci/rigor-optimization-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/rigor-optimization-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/rigor-optimization-plugin</url>
   </scm>
-   -->
-  <repositories>
-    <repository>
-      <id>repo.jenkins-ci.org</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>repo.jenkins-ci.org</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
-    </pluginRepository>
-  </pluginRepositories>
+  
+  <developers>
+    <developer>
+      <id>mtisham</id>
+      <name>Mark Isham</name>
+      <email>mark.isham@rigor.com</email>
+    </developer> 
+  </developers>  
+
   <dependencies>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
