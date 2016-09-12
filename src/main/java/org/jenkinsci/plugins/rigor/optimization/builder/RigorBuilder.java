@@ -254,7 +254,7 @@ public class RigorBuilder extends Builder  {
                 return FormValidation.error("No credentials supplied!!!");
             }
             String apiKey=getRigorCredentials(credentialsId);
-            if(apiKey==null || apiKey=="") {
+            if(apiKey==null || apiKey.equals("")) {
                 return FormValidation.error("API Key Not Found");
             }
 

@@ -12,6 +12,7 @@ import org.jenkinsci.plugins.rigor.optimization.helpers.Utils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
@@ -273,7 +274,7 @@ public class RigorApiClient {
             response.HttpStatusMessage =httpResponse.getStatusLine().getReasonPhrase();
 
             BufferedReader rd = new BufferedReader(
-                    new InputStreamReader(httpResponse.getEntity().getContent()));
+                    new InputStreamReader(httpResponse.getEntity().getContent(), Charset.defaultCharset()));
             StringBuffer result = new StringBuffer();
             String line = "";
             while ((line = rd.readLine()) != null) {
@@ -316,7 +317,7 @@ public class RigorApiClient {
             response.HttpStatusMessage =httpResponse.getStatusLine().getReasonPhrase();
 
             BufferedReader rd = new BufferedReader(
-                    new InputStreamReader(httpResponse.getEntity().getContent()));
+                    new InputStreamReader(httpResponse.getEntity().getContent(),Charset.defaultCharset()));
             StringBuffer result = new StringBuffer();
             String line = "";
             while ((line = rd.readLine()) != null) {
@@ -359,7 +360,7 @@ public class RigorApiClient {
             response.HttpStatusMessage =httpResponse.getStatusLine().getReasonPhrase();
 
             BufferedReader rd = new BufferedReader(
-                    new InputStreamReader(httpResponse.getEntity().getContent()));
+                    new InputStreamReader(httpResponse.getEntity().getContent(),Charset.defaultCharset()));
             StringBuffer result = new StringBuffer();
             String line = "";
             while ((line = rd.readLine()) != null) {
