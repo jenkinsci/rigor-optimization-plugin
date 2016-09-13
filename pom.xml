@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>rigor-optimization</artifactId>
-  <version>1.02-SNAPSHOT</version>
+  <version>1.02</version>
   <packaging>hpi</packaging>
 
   <properties>
@@ -45,7 +45,7 @@
     <connection>scm:git:ssh://github.com/jenkinsci/rigor-optimization-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/rigor-optimization-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/rigor-optimization-plugin</url>
-    <tag>rigor-optimization-1.01</tag>
+    <tag>rigor-optimization-1.02</tag>
   </scm>
   
   <developers>
