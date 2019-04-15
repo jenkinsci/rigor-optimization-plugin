@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>rigor-optimization</artifactId>
-  <version>1.03-SNAPSHOT</version>
+  <version>1.04</version>
   <packaging>hpi</packaging>
 
   <properties>
