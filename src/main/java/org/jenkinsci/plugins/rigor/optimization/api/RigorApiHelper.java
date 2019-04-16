@@ -143,8 +143,9 @@ public class RigorApiHelper {
         }
 
         // Create new snapshots for each configured test
-        ArrayList<RigorApiSnapshotResult> results=new ArrayList<RigorApiSnapshotResult>();
-        for(Integer testID : this.settings.PerformanceTestIDs) {
+        ArrayList<RigorApiSnapshotResult> results = new ArrayList<RigorApiSnapshotResult>();
+        ArrayList<Integer> ptiBuffer = new ArrayList<Integer>(this.settings.PerformanceTestIDs);
+        for(Integer testID : ptiBuffer) {
             Utils.LogMsg(logger,"Creating new snapshot for test " + testID + "...");
             try {
                 RigorApiSnapshotResult result=this.apiClient.StartSnapshot(testID, snapshotStartTag);

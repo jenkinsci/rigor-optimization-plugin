@@ -6,7 +6,6 @@ import com.cloudbees.plugins.credentials.common.StandardCredentials;
 import com.cloudbees.plugins.credentials.common.StandardListBoxModel;
 import com.cloudbees.plugins.credentials.domains.DomainRequirement;
 
-
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.*;
@@ -32,84 +31,96 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class RigorBuilder extends Builder  {
+public class RigorBuilder extends Builder {
     private BuilderSettings settings;
 
-    // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
+    // Fields in config.jelly must match the parameter names in the
+    // "DataBoundConstructor"
     @DataBoundConstructor
-    public RigorBuilder(String credentialsId,
-                        String performanceTestIds,
-                        Boolean failOnSnapshotError,
-                        Boolean failOnResults,
-                        String performanceScore,
-                        String criticalNumber,
-                        String foundDefectIds,
-                        String totalContentSize,
-                        String totalFoundItems,
-                        String testTimeoutSeconds) {
+    public RigorBuilder(String credentialsId, String performanceTestIds, Boolean failOnSnapshotError,
+            Boolean failOnResults, String performanceScore, String criticalNumber, String foundDefectIds,
+            Boolean enforcePerformanceBudgets, String totalContentSize, String totalFoundItems,
+            String testTimeoutSeconds) {
 
-        this.settings=new BuilderSettings();
+        this.settings = new BuilderSettings();
 
-        settings.CredentialsId =credentialsId;
-        settings.InputPerformanceTestIds =performanceTestIds;
+        settings.CredentialsId = credentialsId;
+        settings.InputPerformanceTestIds = performanceTestIds;
         settings.FailBuildOnSnapshotError = failOnSnapshotError;
-        settings.InputFailOnResults =failOnResults;
-        settings.InputPerformanceScore =performanceScore;
-        settings.InputCriticalNumber =criticalNumber;
-        settings.InputFoundDefectIds =foundDefectIds;
+        settings.InputFailOnResults = failOnResults;
+        settings.InputPerformanceScore = performanceScore;
+        settings.InputCriticalNumber = criticalNumber;
+        settings.InputFoundDefectIds = foundDefectIds;
+        settings.EnforcePerformanceBudgets = enforcePerformanceBudgets;
         settings.InputTestTimeoutSeconds = testTimeoutSeconds;
     }
 
-    // Accessors to allow persistance of values set from config.jelly
+    // Accessors to allow persistence of values set from config.jelly
     public String getCredentialsId() {
         return settings.CredentialsId;
     }
+
     public String getperformanceTestIds() {
         return settings.InputPerformanceTestIds;
     }
+
     public boolean getFailOnSnapshotError() {
         return settings.FailBuildOnSnapshotError;
     }
+
     public boolean getFailOnResults() {
         return settings.InputFailOnResults;
     }
+
     public String getPerformanceScore() {
         return settings.InputPerformanceScore;
     }
-    public String getCriticalNumber() { return settings.InputCriticalNumber; }
-    public String getFoundDefectIds() { return settings.InputFoundDefectIds; }
-    public String getTestTimeoutSeconds() { return settings.InputTestTimeoutSeconds; }
+
+    public String getCriticalNumber() {
+        return settings.InputCriticalNumber;
+    }
+
+    public String getFoundDefectIds() {
+        return settings.InputFoundDefectIds;
+    }
+
+    public Boolean getEnforcePerformanceBudgets() {
+        return settings.EnforcePerformanceBudgets;
+    }
+
+    public String getTestTimeoutSeconds() {
+        return settings.InputTestTimeoutSeconds;
+    }
 
     // Called when a build is run
     @Override
-    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
-        PrintStream logger=listener.getLogger();
+    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
+            throws InterruptedException, IOException {
+        PrintStream logger = listener.getLogger();
         try {
             // Fail the build if any configuration parse errors
-            if(!this.settings.ParseSettings(logger)) {
+            if (!this.settings.ParseSettings(logger)) {
                 return false;
             }
 
             // Info about the build, if available
-            Integer buildNumber=null;
-            String projectName=null;
+            Integer buildNumber = null;
+            String projectName = null;
             try {
-                buildNumber=build.number;
-                projectName=build.getProject().getName();
-            }
-            catch (Exception e) {
+                buildNumber = build.number;
+                projectName = build.getProject().getName();
+            } catch (Exception e) {
                 Utils.LogMsg(logger, "Failed to locate build version information, omitting.");
             }
 
             // Init our API connector
-            String apiKey=getDescriptor().getRigorCredentials(settings.CredentialsId);
-            RigorApiHelper helper=new RigorApiHelper(apiKey, this.settings, logger, buildNumber, projectName);
+            String apiKey = getDescriptor().getRigorCredentials(settings.CredentialsId);
+            RigorApiHelper helper = new RigorApiHelper(apiKey, this.settings, logger, buildNumber, projectName);
 
             // Start the pending tests, optionally waiting for completion.
-            // Returns true when build can continue succesfully, or false to fail thebuild
+            // Returns true when build can continue successfully, or false to fail the build
             return helper.RunBuildTests();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Fail the build if we hit a problem
             Utils.LogMsg(logger, "An error occurred: " + e.getMessage());
             return false;
@@ -119,29 +130,29 @@ public class RigorBuilder extends Builder  {
     // Overridden for better type safety.
     @Override
     public DescriptorImpl getDescriptor() {
-        return (DescriptorImpl)super.getDescriptor();
+        return (DescriptorImpl) super.getDescriptor();
     }
 
-
     /**
-     * Descriptor for {@link RigorBuilder}. Used as a singleton.
-     * The class is marked as public so that it can be accessed from views.
+     * Descriptor for {@link RigorBuilder}. Used as a singleton. The class is marked
+     * as public so that it can be accessed from views.
      *
      */
-    @Extension // This indicates to Jenkins that this is an implementation of an extension point.
+    @Extension // This indicates to Jenkins that this is an implementation of an extension
+               // point.
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 
         /**
-         * In order to load the persisted global configuration, you have to
-         * call load() in the constructor.
+         * In order to load the persisted global configuration, you have to call load()
+         * in the constructor.
          */
         public DescriptorImpl() {
             load();
         }
 
         /**
-         * Validation of config fields in response to OnChange events
-         * See https://wiki.jenkins-ci.org/display/JENKINS/Form+Validation
+         * Validation of config fields in response to OnChange events See
+         * https://wiki.jenkins-ci.org/display/JENKINS/Form+Validation
          */
 
         // Validate Performance Test IDs field
@@ -149,19 +160,18 @@ public class RigorBuilder extends Builder  {
             try {
                 BuilderSettings.ParsePerformanceTestIDs(value);
                 return FormValidation.ok();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return FormValidation.error(e.getMessage());
             }
         }
 
         // Validate Performance Score field
-        public FormValidation doCheckPerformanceScore(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckPerformanceScore(@QueryParameter String value)
+                throws IOException, ServletException {
             try {
                 BuilderSettings.ParsePerformanceScore(value);
                 return FormValidation.ok();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return FormValidation.error(e.getMessage());
             }
         }
@@ -171,8 +181,7 @@ public class RigorBuilder extends Builder  {
             try {
                 BuilderSettings.ParseCriticalNumber(value);
                 return FormValidation.ok();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return FormValidation.error(e.getMessage());
             }
         }
@@ -182,8 +191,7 @@ public class RigorBuilder extends Builder  {
             try {
                 BuilderSettings.ParseFoundDefectIDs(value);
                 return FormValidation.ok();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return FormValidation.error(e.getMessage());
             }
         }
@@ -193,8 +201,7 @@ public class RigorBuilder extends Builder  {
             try {
                 BuilderSettings.ParseTestTimeoutSeconds(value);
                 return FormValidation.ok();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return FormValidation.error(e.getMessage());
             }
         }
@@ -204,7 +211,8 @@ public class RigorBuilder extends Builder  {
             return true;
         }
 
-        // This human readable name is used in the configuration screen for this plugin's build step
+        // This human readable name is used in the configuration screen for this
+        // plugin's build step
         public String getDisplayName() {
             return "Test website performance using Rigor Optimization";
         }
@@ -212,13 +220,15 @@ public class RigorBuilder extends Builder  {
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
             save();
-            return super.configure(req,formData);
+            return super.configure(req, formData);
         }
 
         // Get API token from config
         private String getRigorCredentials(String credentialsId) {
-            List<RigorCredentials> rigorCredentialsList = CredentialsProvider.lookupCredentials(RigorCredentials.class, Jenkins.getInstance(), ACL.SYSTEM);
-            RigorCredentials rigorCredentials = CredentialsMatchers.firstOrNull(rigorCredentialsList, CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId)));
+            List<RigorCredentials> rigorCredentialsList = CredentialsProvider.lookupCredentials(RigorCredentials.class,
+                    Jenkins.getInstance(), ACL.SYSTEM);
+            RigorCredentials rigorCredentials = CredentialsMatchers.firstOrNull(rigorCredentialsList,
+                    CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId)));
 
             return rigorCredentials == null ? null : rigorCredentials.getApiKey().getPlainText();
         }
@@ -226,48 +236,40 @@ public class RigorBuilder extends Builder  {
         // Only show Rigor Credentials in the credentials dropdown
         @SuppressWarnings("unused") // used by stapler
         public ListBoxModel doFillCredentialsIdItems(@AncestorInPath Jenkins context,
-                                                     @QueryParameter String remoteBase) {
+                @QueryParameter String remoteBase) {
             if (context == null || !context.hasPermission(Item.CONFIGURE)) {
                 return new StandardListBoxModel();
             }
 
             List<DomainRequirement> domainRequirements = newArrayList();
-            return new StandardListBoxModel()
-                    .withEmptySelection()
-                    .withMatching(
-                            CredentialsMatchers.anyOf(
-                                    CredentialsMatchers.instanceOf(RigorCredentials.class)),
-                            CredentialsProvider.lookupCredentials(
-                                    StandardCredentials.class,
-                                    context,
-                                    ACL.SYSTEM,
-                                    domainRequirements));
+            return new StandardListBoxModel().withEmptySelection().withMatching(
+                    CredentialsMatchers.anyOf(CredentialsMatchers.instanceOf(RigorCredentials.class)),
+                    CredentialsProvider.lookupCredentials(StandardCredentials.class, context, ACL.SYSTEM,
+                            domainRequirements));
         }
 
         @SuppressWarnings("unused") // used by stapler
-        public FormValidation doVerifyCredentials(
-                @QueryParameter String credentialsId, @QueryParameter String performanceTestIds) throws IOException {
+        public FormValidation doVerifyCredentials(@QueryParameter String credentialsId,
+                @QueryParameter String performanceTestIds) throws IOException {
 
             // Make sure we have credentials
-            int length=credentialsId.length();
-            if(length==0) {
+            int length = credentialsId.length();
+            if (length == 0) {
                 return FormValidation.error("No credentials supplied!!!");
             }
-            String apiKey=getRigorCredentials(credentialsId);
-            if(apiKey==null || apiKey.equals("")) {
+            String apiKey = getRigorCredentials(credentialsId);
+            if (apiKey == null || apiKey.equals("")) {
                 return FormValidation.error("API Key Not Found");
             }
 
             // Test the connection + test IDs
             try {
-                RigorApiHelper helper=new RigorApiHelper(apiKey, null, null, null, null);
+                RigorApiHelper helper = new RigorApiHelper(apiKey, null, null, null, null);
                 helper.TestApiConnection(performanceTestIds);
                 return FormValidation.ok("Connection confirmed!");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return FormValidation.error(e.getMessage());
             }
         }
     }
-
 }
