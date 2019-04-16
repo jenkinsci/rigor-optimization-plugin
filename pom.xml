@@ -53,6 +53,11 @@
       <id>mtisham</id>
       <name>Mark Isham</name>
       <email>mark.isham@rigor.com</email>
+    </developer>
+    <developer>
+      <id>wcmonty</id>
+      <name>William Montgomer</name>
+      <email>william.montgomery@rigor.com</email>
     </developer> 
   </developers>  
   
