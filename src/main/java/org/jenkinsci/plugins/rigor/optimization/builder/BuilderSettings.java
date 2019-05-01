@@ -50,6 +50,12 @@ public class BuilderSettings {
 	public Integer CriticalNumber;
 	public ArrayList<Integer> FoundDefectIds;
 
+	//	449,Resource Exceeds Performance Budget (Image)
+	//	450,Resource Exceeds Performance Budget (CSS)
+	//	451,Resource Exceeds Performance Budget (JavaScript)
+	//	452,Resource Exceeds Performance Budget (HTML)
+	//	453,Resource Exceeds Performance Budget (Font)
+	//	454,Resource Exceeds Performance Budget (Video)
 	//	466,Page Weight Exceeds Performance Budget (Images)
 	//	467,Page Weight Exceeds Performance Budget (CSS)
 	//	468,Page Weight Exceeds Performance Budget (JavaScript)
@@ -72,9 +78,9 @@ public class BuilderSettings {
 	//	497,Page Timing Exceeds Performance Budget (First Meaningful Paint)
 	//	498,Page Weight Exceeds Performance Budget (All Content)
 	private Integer[] intArray = new Integer[]{
-			466, 467, 468, 469, 470, 471, 472, 485, 486, 487,
-			488, 489, 490, 491, 492, 493, 494, 495, 496, 497,
-			498
+			449, 450, 451, 452, 453, 454, 466, 467, 468, 469,
+			470, 471, 472, 485, 486, 487, 488, 489, 490, 491,
+			492, 493, 494, 495, 496, 497, 498
 		};
 	public ArrayList<Integer> PerformanceBudgetDefectIds = new ArrayList<Integer>(Arrays.asList(intArray));
 
