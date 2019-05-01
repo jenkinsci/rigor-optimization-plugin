@@ -70,9 +70,11 @@ public class BuilderSettings {
 	//	495,Page Timing Exceeds Performance Budget (Speed Index)
 	//	496,Page Timing Exceeds Performance Budget (Fully Loaded)
 	//	497,Page Timing Exceeds Performance Budget (First Meaningful Paint)
+	//	498,Page Weight Exceeds Performance Budget (All Content)
 	private Integer[] intArray = new Integer[]{
 			466, 467, 468, 469, 470, 471, 472, 485, 486, 487,
-			488, 489, 490, 491, 492, 493, 494, 495, 496, 497
+			488, 489, 490, 491, 492, 493, 494, 495, 496, 497,
+			498
 		};
 	public ArrayList<Integer> PerformanceBudgetDefectIds = new ArrayList<Integer>(Arrays.asList(intArray));
 
