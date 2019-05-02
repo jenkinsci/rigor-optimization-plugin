@@ -35,7 +35,7 @@ public class RigorApiClient {
         return makeGetRequest(url);
     }
 
-    // Test for existance of a specific performance test ID
+    // Test for existence of a specific performance test ID
     public RigorApiResponse TestForValidTestID(Integer testID) {
         // Call Get Tests, should always return 200 ok if our credentials are valid
         String url="tests/" + testID.toString();

@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>rigor-optimization</artifactId>
-  <version>1.03-SNAPSHOT</version>
+  <version>1.04</version>
   <packaging>hpi</packaging>
 
   <properties>
@@ -53,6 +53,11 @@
       <id>mtisham</id>
       <name>Mark Isham</name>
       <email>mark.isham@rigor.com</email>
+    </developer>
+    <developer>
+      <id>wcmonty</id>
+      <name>William Montgomer</name>
+      <email>william.montgomery@rigor.com</email>
     </developer> 
   </developers>  
   
@@ -93,7 +98,7 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3.5</version>
+      <version>4.3.6</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

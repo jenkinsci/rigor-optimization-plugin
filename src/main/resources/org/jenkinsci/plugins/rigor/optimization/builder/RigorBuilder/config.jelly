@@ -48,6 +48,10 @@
       <f:textbox />
     </f:entry>
 
+    <f:entry title="Enforce Performance Budgets" field="enforcePerformanceBudgets">
+      <f:checkbox default="true" />
+    </f:entry>
+
     <f:entry title="Timeout waiting for test completion (seconds)" field="testTimeoutSeconds">
       <f:textbox default="300" />
     </f:entry>
