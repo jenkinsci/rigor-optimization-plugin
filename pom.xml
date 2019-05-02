@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>rigor-optimization</artifactId>
-  <version>1.04-SNAPSHOT</version>
+  <version>1.04</version>
   <packaging>hpi</packaging>
 
   <properties>
@@ -45,7 +45,7 @@
     <connection>scm:git:ssh://github.com/jenkinsci/rigor-optimization-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/rigor-optimization-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/rigor-optimization-plugin</url>
-    <tag>rigor-optimization-1.01</tag>
+    <tag>rigor-optimization-1.04</tag>
   </scm>
   
   <developers>
@@ -83,14 +83,15 @@
 			 <additionalparam>-Xdoclint:none</additionalparam>
 			</configuration>
 		</plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>findbugs-maven-plugin</artifactId>
-                <configuration>
-                    <failOnError>false</failOnError>
-                </configuration>
-        </plugin>	  
-	</plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.5</version>
+            <configuration>
+-               <failOnError>false</failOnError>
+-           </configuration>
+      </plugin>
+    </plugins>
   </build>  
 
   <dependencies>
