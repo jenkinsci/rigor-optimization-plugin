@@ -55,10 +55,10 @@
       <email>mark.isham@rigor.com</email>
     </developer>
     <developer>
-      <id>wcmonty</id>
+      <id>wmontgomery-splunk</id>
       <name>William Montgomer</name>
-      <email>william.montgomery@rigor.com</email>
-    </developer> 
+      <email>wmontgomery@splunk.com</email>
+    </developer>
   </developers>  
   
   <repositories>
